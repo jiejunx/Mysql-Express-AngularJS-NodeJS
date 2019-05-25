@@ -1,0 +1,26 @@
+table {
+   width: 70%;
+   height: 50%;
+}
+
+.card {
+   margin: 7px;
+   overflow: scroll
+}
+
+
+.mat-icon {
+   cursor: pointer
+}
+
+.mat-header-row {
+   position: sticky;
+   top: 0;
+   z-index: 100;
+}
+
+#filter {
+   position: sticky;
+   top: 0;
+   z-index: 100;
+}

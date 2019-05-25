@@ -1,0 +1,109 @@
+
+
+.statistic {
+    font-size: 60px !important;
+    position: absolute;
+    top : 1%;
+
+
+
+    /* left: 50%;
+    top: 1%; */
+    /* transform: translate(-20%, -20%) */
+}
+
+p {
+    position: absolute;
+    bottom: 1%;
+    font-size: 25px;
+}
+
+.stats_grid {
+
+  width: 100%;
+  position: absolute;
+
+
+
+}
+
+
+#stat_mat_grid {
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+.card {
+   width : 40%;
+   left:28.7%;
+   margin: 7px;
+  }
+
+  .stats-header-image {
+    background-image: url('../../assets/pie-chart-3.png');
+    background-size: cover;
+
+  }
+
+  .actions-header-image {
+    background-image: url('../../assets/actions.png');
+    background-size: cover;
+
+  }
+
+  .reports-header-image {
+    background-image: url('../../assets/assessment.png');
+    background-size: cover;
+
+  }
+
+
+  mat-card img{
+    object-fit: cover; /*this makes de image in src fit to the size of specified below*/
+    width: 100%; /* Here you can use wherever you want to specify the width and also the height of the <img>*/
+    height: 40%;
+
+  }
+
+
+  button {
+      width: 100%;
+      height: 100%;
+  }
+
+  .action_desc {
+    margin: 0;
+    font-weight: 700;
+    width: 100%;
+    text-align: center;
+  }
+  .button_icon {
+    font-size: 48px;
+
+  }
+
+  .action_button {
+    background-color : #808080;
+
+  }
+
+
+  .mat-button, .mat-fab, .mat-flat-button, .mat-icon-button,
+  .mat-mini-fab, .mat-raised-button, .mat-stroked-button{
+    font-size: 0.8em;
+  }
+
+
+  .button_icon {
+    color: white;
+    margin-right: 19px;
+  }
+
+  .button_title {
+      position: relative;
+      margin-top: 50px;
+      color: #FFFFFF;
+  }
+

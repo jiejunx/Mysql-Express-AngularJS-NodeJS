@@ -1,0 +1,83 @@
+<mat-card class="card">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>calendar_today</mat-icon>
+    </div>
+    <mat-card-title>View Holidays</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div style="overflow-y:scroll; height:400px;">
+      <table mat-table #table [dataSource]="data" class="mat-elevation-z8">
+        <ng-container matColumnDef="Date">
+          <th mat-header-cell *matHeaderCellDef> Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.Date}} </td>
+        </ng-container>
+        <ng-container matColumnDef="HolidayName">
+          <th mat-header-cell *matHeaderCellDef> Holiday Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.HolidayName}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+
+<mat-card class="card">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>note_add</mat-icon>
+    </div>
+    <mat-card-title>Add Holiday</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div>
+      <h3>Please enter the date and name of the holiday to be added:</h3>
+      <div>
+        <mat-form-field>
+          <input matInput [(ngModel)]="newDate" [matDatepicker]="picker" (focus)="picker.open()"
+            placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker touchUi #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <input matInput maxlength="49"  [(ngModel)]="newHolidayName" placeholder="Enter holiday name" />
+        </mat-form-field>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="accent" [disabled]="!newHolidayName" (click)="addHoliday()">Add Holiday</button>
+  </mat-card-actions>
+</mat-card>
+
+
+
+
+
+<!-- <h1>
+      Add Holiday
+    </h1>
+  
+  <div>
+    <p>Please enter the date and name of the holiday to be added:</p>
+      <div>
+        <p>Date:
+        <input [(ngModel)]="newDate" placeholder="e.g. 2019-01-01"/>
+        </p>
+      </div>
+      <div>
+        <p>Holiday Name:
+        <input [(ngModel)]="newHolidayName" placeholder="e.g. New Year"/>
+        </p>
+      </div>
+  </div>
+  
+  <button (click)="addHoliday()">Add Holiday</button>
+   
+  
+  
+   -->

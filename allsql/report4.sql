@@ -1,0 +1,1 @@
+Select DISTINCT(State) FROM Store;

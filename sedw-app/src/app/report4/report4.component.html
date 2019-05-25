@@ -1,0 +1,68 @@
+<mat-card class="card">
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>location_on</mat-icon>
+      </div>
+      <mat-card-title>Select A State</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-form-field>
+          <mat-label>State</mat-label>
+          <mat-select matInput name="mySelect" ([ngModel])="value">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let state of states" [value]="state.State" (click)="anotherMethod(state.State)">{{state.State}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+    </mat-card-content>
+  </mat-card>
+  
+  
+
+<br>
+
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="dataSource.data.length > 0">
+
+
+
+  <ng-container matColumnDef="Position">
+    <th mat-header-cell *matHeaderCellDef> Rank </th>
+    <td mat-cell *matCellDef="let element; let i = index"> {{i+1}} </td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="StoreNumber">
+    <th mat-header-cell *matHeaderCellDef> Store Number </th>
+    <td mat-cell *matCellDef="let element"> {{element.StoreNumber}} </td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="StreetAddress">
+    <th mat-header-cell *matHeaderCellDef> Stree Address </th>
+    <td mat-cell *matCellDef="let element"> {{element.StreetAddress}} </td>
+  </ng-container>
+
+
+
+  <ng-container matColumnDef="CityName">
+    <th mat-header-cell *matHeaderCellDef> City Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.CityName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="Year">
+    <th mat-header-cell *matHeaderCellDef> Year </th>
+    <td mat-cell *matCellDef="let element"> {{element.Year}} </td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="TotRevenue">
+    <th mat-header-cell *matHeaderCellDef> Total Revenue </th>
+    <td mat-cell *matCellDef="let element"> {{element.TotRevenue | number : '.2-2'}} </td>
+  </ng-container>
+
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+

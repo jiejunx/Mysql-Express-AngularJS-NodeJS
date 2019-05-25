@@ -1,0 +1,273 @@
+<mat-tab-group [selectedIndex]="tabid">
+  <mat-tab label="Quick Add">
+
+    <mat-card class="card">
+      <mat-card-header>
+        <div mat-card-avatar>
+          <mat-icon>create icon</mat-icon>
+        </div>
+        <mat-card-title>Add Manager</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div>
+          <h3>Please enter the name and email of the manager to be added:</h3>
+          <div>
+            <mat-form-field>
+              <mat-label>Manager Name</mat-label>
+              <input matInput maxlength="100" [(ngModel)]="addedName" [formControl]="card2NameControl" />
+              <mat-error *ngIf="card2NameControl.invalid">{{getC2NameErrorMessage()}}</mat-error>
+            </mat-form-field>
+
+          </div>
+          <div>
+            <mat-form-field>
+              <mat-label>Manager Email</mat-label>
+              <input matInput [(ngModel)]="addedEmail"  maxlength="100" [formControl]="card2EmailControl" />
+              <mat-error *ngIf="card2EmailControl.invalid">{{getC2EmailErrorMessage()}}</mat-error>
+            </mat-form-field>
+
+          </div>
+        </div>
+
+        <div *ngIf="card2data">
+          <table mat-table [dataSource]="card2data">
+
+            <ng-container matColumnDef="ManagerName">
+              <th mat-header-cell *matHeaderCellDef> ManagerName </th>
+              <td mat-cell *matCellDef="let element"> {{element.ManagerName}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="Email">
+              <th mat-header-cell *matHeaderCellDef> Email </th>
+              <td mat-cell *matCellDef="let element"> {{element.Email}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="card2DisplayColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: card2DisplayColumns;"></tr>
+          </table>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button *ngIf="!add_btn_pressed" (click)="addManagerPreview()"
+          [disabled]="card2NameControl.invalid || card2EmailControl.invalid">Add Manager</button>
+        <button mat-raised-button *ngIf="add_btn_pressed" (click)="addManager()" [disabled]="submitted"
+          color="accent">Confirm</button>
+        <button mat-raised-button *ngIf="card2data" (click)="resetCard2()">Start Over</button>
+      </mat-card-actions>
+    </mat-card>
+
+
+
+  </mat-tab>
+  <mat-tab label="Action Wizard">
+    <mat-card class="card">
+      <mat-card-header>
+        <div mat-card-avatar>
+          <mat-icon>search</mat-icon>
+        </div>
+        <mat-card-title>Select Manager / View Manager Info</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div>
+          <h3> Before Remove / Unassign actions, please search for a manager by BOTH the name and email</h3>
+          <mat-form-field>
+            <mat-label>Manager Name</mat-label>
+            <input type="text" matInput [formControl]="card1NameControl" [matAutocomplete]="name">
+            <mat-autocomplete #name="matAutocomplete">
+              <mat-option (click)="onNameItemSelected(name)" *ngFor="let name of filteredNames | async" [value]="name">
+                {{name}}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="card1NameControl.invalid">{{getC1NameErrorMessage()}}</mat-error>
+          </mat-form-field>
+        </div>
+        <br>
+        <div>
+          <mat-form-field>
+            <mat-label>Manager Email</mat-label>
+            <input type="email" maxlength="100" matInput [formControl]="card1EmailControl" [matAutocomplete]="email">
+            <mat-autocomplete #email="matAutocomplete">
+              <mat-option (click)="onEmailItemSelected(email)" *ngFor="let email of filteredEmails | async"
+                [value]="email">
+                {{email}}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="card1EmailControl.invalid">{{getC1EmailErrorMessage()}}</mat-error>
+          </mat-form-field>
+        </div>
+        <div *ngIf="card1data">
+          <table mat-table [dataSource]="card1data">
+            <ng-container matColumnDef="ManagerName">
+              <th mat-header-cell *matHeaderCellDef> ManagerName </th>
+              <td mat-cell *matCellDef="let element"> {{element.ManagerName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Email">
+              <th mat-header-cell *matHeaderCellDef> Email </th>
+              <td mat-cell *matCellDef="let element"> {{element.Email}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="Status">
+              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <td mat-cell *matCellDef="let element"> {{element.Status}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </mat-card-content>
+      <mat-card-actions *ngIf="!(remove_option_selected || unassign_option_selected || assign_option_selected)">
+        <button mat-raised-button *ngIf="!card1data" [disabled]="!(selectedEmail && selectedName)" color="accent"
+          (click)="searchManager()">Show Status</button>
+        <button mat-raised-button [disabled]="(!selectedEmail && !selectedName)" (click)="resetCard1()">Reset</button>
+        <button mat-raised-button *ngIf="card1data && selectedManagerIsActive" (click)="copyOver(1)"
+          color="accent">Unassign Manager</button>
+        <button mat-raised-button *ngIf="card1data && !selectedManagerIsActive" (click)="copyOver(2)"
+          color="accent">Remove Manager</button>
+        <button mat-raised-button *ngIf="card1data" (click)="copyOver(3)"
+          color="accent">Assign Manager</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card *ngIf="remove_option_selected" class="card" id="remove_card">
+      <mat-card-header>
+        <div mat-card-avatar>
+          <mat-icon>delete</mat-icon>
+        </div>
+        <mat-card-title>Remove Manager</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+
+
+        <div *ngIf="card3data">
+          <table mat-table [dataSource]="card3data">
+
+            <ng-container matColumnDef="ManagerName">
+              <th mat-header-cell *matHeaderCellDef> ManagerName </th>
+              <td mat-cell *matCellDef="let element"> {{element.ManagerName}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="Email">
+              <th mat-header-cell *matHeaderCellDef> Email </th>
+              <td mat-cell *matCellDef="let element"> {{element.Email}} </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="card3DisplayColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: card3DisplayColumns;"></tr>
+          </table>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button *ngIf="!rmv_btn_pressed" (click)="rmvManagerPreview()">Remove Manager</button>
+        <button mat-raised-button *ngIf="rmv_btn_pressed" (click)="removeManager()" [disabled]="rmv_submitted"
+          color="accent">Confirm Removal</button>
+        <button mat-raised-button *ngIf="card3data" (click)="resetRemoveCard()">Start Over</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card *ngIf="unassign_option_selected" class="card">
+      <mat-card-header>
+        <div mat-card-avatar>
+          <mat-icon>assignment ind icon</mat-icon>
+        </div>
+        <mat-card-title>Unassign Manager</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="cardUnassignData">
+          <table mat-table [dataSource]="cardUnassignData">
+
+            <ng-container matColumnDef="StoreNumber">
+              <th mat-header-cell *matHeaderCellDef> Store Number </th>
+              <td mat-cell *matCellDef="let element"> {{element.StoreNumber}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ActiveManagerEmail">
+              <th mat-header-cell *matHeaderCellDef> Active Manager Email </th>
+              <td mat-cell *matCellDef="let element"> {{element.ActiveManagerEmail}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="MatIcon">
+              <th mat-header-cell *matHeaderCellDef> Unassign </th>
+              <td mat-cell *matCellDef="let element"><a (click)="unassignManager(element)">
+                  <mat-icon>delete</mat-icon>
+                </a></td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="unassignDisplayColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: unassignDisplayColumns;"></tr>
+          </table>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button (click)="resetUnassign()">Start Over</button>
+      </mat-card-actions>
+    </mat-card>
+
+
+
+
+    <mat-card *ngIf="assign_option_selected" class="card">
+      <mat-card-header>
+        <div mat-card-avatar>
+          <mat-icon>assignment ind icon</mat-icon>
+        </div>
+        <mat-card-title>Assign Manager: {{selectedName}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+
+        <div style="overflow-y:scroll; height:400px;" *ngIf="storeList">
+          <table mat-table [dataSource]="storeList">
+            <ng-container matColumnDef="StoreNumber">
+              <th mat-header-cell *matHeaderCellDef> Store Number </th>
+              <td mat-cell *matCellDef="let element"> {{element.StoreNumber}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="StreetAddress">
+              <th mat-header-cell *matHeaderCellDef> Street Address</th>
+              <td mat-cell *matCellDef="let element"> {{element.StreetAddress}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="CityName">
+              <th mat-header-cell *matHeaderCellDef> City Name </th>
+              <td mat-cell *matCellDef="let element"> {{element.CityName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="State">
+              <th mat-header-cell *matHeaderCellDef> State</th>
+              <td mat-cell *matCellDef="let element"> {{element.State}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="MatIcon">
+              <th mat-header-cell *matHeaderCellDef> Select Store Number </th>
+              <td mat-cell *matCellDef="let element"><a (click)="copyStoreNumber(element.StoreNumber)">
+                  <mat-icon>content_copy</mat-icon>
+                </a></td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="assignDisplayColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: assignDisplayColumns;"></tr>
+          </table>
+        </div>
+        <mat-form-field id="filter">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        </mat-form-field>
+        <br>
+        <mat-form-field id="storeid">
+          <mat-label>Selected Store Number</mat-label>
+          <input matInput [formControl]="storeIdControl" />
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button [disabled]="assign_disabled" (click)="assignManager()" color="accent">Assign</button>
+        <button mat-raised-button (click)="resetAssign()">Start Over</button>
+      </mat-card-actions>
+    </mat-card>
+
+  </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,62 @@
+<mat-card class="card" id="stats_card">
+    <mat-card-header>
+      <div mat-card-avatar class="stats-header-image"></div>
+      <mat-card-title>Statistics</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-grid-list id="stat_mat_grid" cols="2" rowHeight="100px" [gutterSize]="'7px'">
+            <mat-grid-tile
+                *ngFor="let tile of stat_tiles"
+                [colspan]="tile.cols"
+                [rowspan]="tile.rows"
+                [style.background]="tile.color">
+              <h1 [countUp]="tile.endVal"  [options]="opts" class="statistic">0</h1>
+              <p>{{tile.text}}</p>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-card-content>
+  </mat-card>
+
+
+
+<mat-card class="card" id="actions_card">
+    <mat-card-header>
+      <div mat-card-avatar class="actions-header-image"></div>
+      <mat-card-title>Actions</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-grid-list id="stat_mat_grid" cols="2" rowHeight="100px" [gutterSize]="'7px'">
+            <mat-grid-tile
+                *ngFor="let tile of action_tiles"
+                [colspan]="tile.cols"
+                [rowspan]="tile.rows"
+                [style.background]="tile.color">
+                    <button routerLink="{{tile.link}}" mat-flat-button class="action_button">
+                      <mat-icon class="button_icon">{{tile.icon}}</mat-icon>
+                      <h3 class="button_title">{{tile.text}}</h3>
+                    </button>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="card" id="reports_card">
+      <mat-card-header>
+        <div mat-card-avatar class="reports-header-image"></div>
+        <mat-card-title>Reports</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+          <mat-grid-list id="stat_mat_grid" cols="2" rowHeight="100px" [gutterSize]="'7px'">
+              <mat-grid-tile
+                  *ngFor="let tile of report_tiles"
+                  [colspan]="tile.cols"
+                  [rowspan]="tile.rows"
+                  [style.background]="tile.color">
+                        <button  routerLink="{{tile.link}}" mat-flat-button class="action_button">
+                        <mat-icon class="button_icon">{{tile.icon}}</mat-icon>
+                        <h3 class="button_title">{{tile.text}}</h3>
+                      </button>
+              </mat-grid-tile>
+          </mat-grid-list>
+      </mat-card-content>
+    </mat-card>

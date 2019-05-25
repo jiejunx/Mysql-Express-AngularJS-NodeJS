@@ -1,0 +1,13 @@
+table {
+  width: 50%;
+}
+
+.card {
+  margin: 7px;
+}
+
+.mat-header-row {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}

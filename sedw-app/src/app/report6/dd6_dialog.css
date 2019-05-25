@@ -1,0 +1,14 @@
+table {
+    width: 100%;
+}
+
+.mat-header-row {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+mat-card {
+    /* background: #808080; */
+    box-shadow: none !important;
+}
